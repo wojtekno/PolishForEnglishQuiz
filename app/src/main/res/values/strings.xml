@@ -1,0 +1,55 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Polish for English - Quiz</string>
+    <string name="header">Welcome to little quiz</string>
+    <string name="header_intro">You may think that you know nothing about Polish...</string>
+    <string name="header_question">Let\'s see if that\'s true</string>
+
+    <string name="show_score">Your scored: <xliff:g name="score" example="3">%.1f</xliff:g> points\nYou can try again, or see the correct answers</string>
+    <string name="submit_button">Submit</string>
+    <string name="reset_button">Reset Quiz</string>
+    <string name="try_again_button">Try again</string>
+    <string name="wrong_answer"> (wrong)</string>
+    <string name="show_answers_button">Show answers</string>
+    <string name="correct_answer">"\t\t\t\t\t\tCorrect answer! "</string>
+
+    <string name="q1">\"Lampa\" what does it mean?</string>
+    <string name="q1_answer1">a torch</string>
+    <string name="q1_answer2">a lab</string>
+    <string name="q1_answer3">a lamp</string>
+    <string name="q1_answer4">the moon</string>
+
+    <string name="q2">\"Biblioteka\" means</string>
+    <string name="q2_answer1">10 commandments</string>
+    <string name="q2_answer2">a library</string>
+    <string name="q2_answer3">The Bible</string>
+    <string name="q2_answer4">a book store</string>
+
+    <string name="q3">\"Zamek\" means a castle. Guess if it\'s also something else</string>
+    <string name="q3_answer1">a rock</string>
+    <string name="q3_answer2">a lock</string>
+    <string name="q3_answer3">a bunker</string>
+    <string name="q3_answer4">a zipper</string>
+
+    <string name="q4">This one about history. For how many years did Poland vanish from maps?</string>
+    <string name="q4_hint">no idea? try 123</string>
+    <string name="q4_answer"> It was 123 years!!! </string>
+
+    <string name="q5">\"Staw\" is a lake, but does it only mean that?</string>
+    <string name="q5_answer1">a puddle</string>
+    <string name="q5_answer2">a loop</string>
+    <string name="q5_answer3">a joint</string>
+    <string name="q5_answer4">an eye</string>
+
+    <string name="q6">\"Kod\" is ...</string>
+    <string name="q6_answer1">a code</string>
+    <string name="q6_answer2">a cod</string>
+    <string name="q6_answer3">a cat</string>
+    <string name="q6_answer4">a dog</string>
+
+    <string name="q7">\"Korek\" gues what that means</string>
+    <string name="q7_answer1">traffic jam</string>
+    <string name="q7_answer2">a plug</string>
+    <string name="q7_answer3">a selfie stick</string>
+    <string name="q7_answer4">a cork</string>
+
+</resources>
