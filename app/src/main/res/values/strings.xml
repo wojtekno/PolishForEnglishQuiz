@@ -5,7 +5,7 @@
     <string name="header_question">Let\'s see if that\'s true</string>
 
 
-    <string name="show_score">Your scored: <xliff:g name="score" example="3">%.1f</xliff:g> points\nYou can try again, or see the correct answers</string>
+    <string name="show_score">Your scored: <xliff:g name="score" example="3">%.1f</xliff:g> points out of 7\nYou can see the correct answers or TRY AGAIN</string>
     <string name="submit_button">Submit</string>
     <string name="reset_button">Reset Quiz</string>
     <string name="try_again_button">Try again</string>
@@ -31,14 +31,14 @@
     <string name="q2">\"Biblioteka\" means</string>
     <string name="q2_answer1">10 commandments</string>
     <string name="q2_answer2">a library</string>
-    <string name="q2_answer3">The Bible</string>
+    <string name="q2_answer3">the Bible</string>
     <string name="q2_answer4">a book store</string>
 
     <string-array name="q2_array">
         <item name="q2a">\"Biblioteka\" means</item>
         <item name="q2_answer1a">10 commandments</item>
         <item name="q2_answer2a">a library</item>
-        <item name="q2_answer3a">The Bible</item>
+        <item name="q2_answer3a">the Bible</item>
         <item name="q2_answer4a">a book store</item>
     </string-array>
 

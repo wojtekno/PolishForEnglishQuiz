@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -17,10 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button submitButton;
     boolean submitButtonFlag = false;
-    CheckBox[] checkBoxAnswers = new CheckBox[4];
-    String[][] answers = new String[7][];
-    int[][] viewIDs = new int[7][];
-    boolean[][] correctAnswers = new boolean[7][];
+    int numberOfQuestions = 7;
+    int[][] viewIDsArray = new int[numberOfQuestions][];
+    boolean[][] correctAnswersArray = new boolean[numberOfQuestions][];
 
 
     @Override
@@ -28,438 +25,233 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         submitButton = findViewById(R.id.submit_button);
-        assignStringValus();
         assignViewIDs();
+        assignCorrectAnswers();
     }
 
-    void assignStringValus() {
-        answers[0] = getResources().getStringArray(R.array.q1_array);
-        answers[1] = getResources().getStringArray(R.array.q2_array);
-        Log.v("Main", "ans1,2" + answers[1][1]);
-//        answers[2] = getResources().getStringArray(R.array.q3_array);
-    }
+    /*TODO: onSavedInstance and onRestoreInstance*/
 
+    /*assign needed Views from activity_main.xml to the viewIDsArray
+    * */
     void assignViewIDs() {
-
-        int[] q1IDs = {R.id.q1_answer1_radio_button, R.id.q1_answer2_radio_button, R.id.q1_answer3_radio_button, R.id.q1_answer4_radio_button};
-        boolean[] correctAnswersQ1 = {false, false, true, false};
-        int[] q2IDs = {R.id.q2_answer1_radio_button, R.id.q2_answer2_radio_button, R.id.q2_answer3_radio_button, R.id.q2_answer4_radio_button};
-        boolean[] correctAnswersQ2 = {false, true, false, false};
-        int[] q3IDs = {R.id.q3_answer1_check_box, R.id.q3_answer2_check_box, R.id.q3_answer3_check_box, R.id.q3_answer4_check_box};
-        boolean[] correctAnswersQ3 = {false, true, false, true};
-        int[] q4IDs = {R.id.q4_answer_edit_text};
-        boolean[] correctAnswersQ4 = new boolean[0];
-        int[] q5IDs = {R.id.q5_answer1_check_box, R.id.q5_answer2_check_box, R.id.q5_answer3_check_box, R.id.q5_answer4_check_box};
-        boolean[] correctAnswersQ5 = {false, false, true, false};
-        int[] q6IDs = {R.id.q6_answer1_check_box, R.id.q6_answer2_check_box, R.id.q6_answer3_check_box, R.id.q6_answer4_check_box};
-        boolean[] correctAnswersQ6 = {true, false, false, false};
-        int[] q7IDs = {R.id.q7_answer1_check_box, R.id.q7_answer2_check_box, R.id.q7_answer3_check_box, R.id.q7_answer4_check_box};
-        boolean[] correctAnswersQ7 = {true, true, false, true};
-        viewIDs[0] = q1IDs;
-        viewIDs[1] = q2IDs;
-        viewIDs[2] = q3IDs;
-        viewIDs[3] = q4IDs;
-        viewIDs[4] = q5IDs;
-        viewIDs[5] = q6IDs;
-        viewIDs[6] = q7IDs;
-        correctAnswers[0] = correctAnswersQ1;
-        correctAnswers[1] = correctAnswersQ2;
-        correctAnswers[2] = correctAnswersQ3;
-        correctAnswers[3] = correctAnswersQ4;
-        correctAnswers[4] = correctAnswersQ5;
-        correctAnswers[5] = correctAnswersQ6;
-        correctAnswers[6] = correctAnswersQ7;
+        viewIDsArray[0] = new int[]{R.id.q1_answer1_radio_button, R.id.q1_answer2_radio_button, R.id.q1_answer3_radio_button, R.id.q1_answer4_radio_button};
+        viewIDsArray[1] = new int[]{R.id.q2_answer1_radio_button, R.id.q2_answer2_radio_button, R.id.q2_answer3_radio_button, R.id.q2_answer4_radio_button};
+        viewIDsArray[2] = new int[]{R.id.q3_answer1_check_box, R.id.q3_answer2_check_box, R.id.q3_answer3_check_box, R.id.q3_answer4_check_box};
+        viewIDsArray[3] = new int[]{R.id.q4_answer_edit_text};
+        viewIDsArray[4] = new int[]{R.id.q5_answer1_check_box, R.id.q5_answer2_check_box, R.id.q5_answer3_check_box, R.id.q5_answer4_check_box};
+        viewIDsArray[5] = new int[]{R.id.q6_answer1_check_box, R.id.q6_answer2_check_box, R.id.q6_answer3_check_box, R.id.q6_answer4_check_box};
+        viewIDsArray[6] = new int[]{R.id.q7_answer1_check_box, R.id.q7_answer2_check_box, R.id.q7_answer3_check_box, R.id.q7_answer4_check_box};
     }
 
-    /*
-    Evaluate question 1
-    if nothitng checked @return false
-    @return boolean - is answer good or not
-
-     */
-    boolean q1Evaluate() {
-        RadioGroup radioGroup = findViewById(R.id.q1_radio_group);
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            radioGroup.getChildAt(i).setClickable(false);
-        }
-        RadioButton userAnswer = findViewById(radioGroup.getCheckedRadioButtonId());
-        if (userAnswer == null) {
-            return false;
-        }
-
-        for (int i = 0; i < correctAnswers[0].length; i++) {
-            if (correctAnswers[0][i]) {
-                if (radioGroup.getCheckedRadioButtonId() != viewIDs[0][i]) {
-                    userAnswer.setBackgroundResource(R.drawable.wrong_highlighted);
-                    return false;
-                } else {
-                    userAnswer.setBackgroundResource(R.drawable.correct_highlighted);
-                    return true;
-                }
-            }
-        }
-        return false;
+    /*assign solutions(good answers) of every question to an array
+    * true - good answer
+    * false - wrong answer
+    * caution! question 4 is an EditText question so there is no value assigned*/
+    void assignCorrectAnswers() {
+        correctAnswersArray[0] = new boolean[]{false, false, true, false};
+        correctAnswersArray[1] = new boolean[]{false, true, false, false};
+        correctAnswersArray[2] = new boolean[]{false, true, false, true};
+        correctAnswersArray[3] = new boolean[0];
+        correctAnswersArray[4] = new boolean[]{false, false, true, false};
+        correctAnswersArray[5] = new boolean[]{true, false, false, false};
+        correctAnswersArray[6] = new boolean[]{true, true, false, true};
     }
 
-
-    /*
-    Restore question one to its default look - nothing checked, no "(wrong)" appendix
-     */
-    void q1Reset() {
-        RadioGroup radioGroup = findViewById(R.id.q1_radio_group);
-        radioGroup.clearCheck();
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            radioGroup.getChildAt(i).setClickable(true);
-            radioGroup.getChildAt(i).setBackgroundColor(View.INVISIBLE);
-        }
-    }
-
-    boolean q2Evaluate() {
-        RadioGroup radioGroup = findViewById(R.id.q2_radio_group);
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            radioGroup.getChildAt(i).setClickable(false);
-        }
-        RadioButton userAnswer = findViewById(radioGroup.getCheckedRadioButtonId());
-        if (userAnswer == null) {
-            return false;
-        }
-        for (int i = 0; i < correctAnswers[1].length; i++) {
-            if (correctAnswers[1][i]) {
-                if (radioGroup.getCheckedRadioButtonId() != viewIDs[1][i]) {
-                    userAnswer.setBackgroundResource(R.drawable.wrong_highlighted);
-                    return false;
-                } else {
-                    userAnswer.setBackgroundResource(R.drawable.correct_highlighted);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    void q2Reset() {
-        RadioGroup radioGroup = findViewById(R.id.q2_radio_group);
-        radioGroup.clearCheck();
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            radioGroup.getChildAt(i).setClickable(true);
-            radioGroup.getChildAt(i).setBackgroundColor(View.INVISIBLE);
-        }
-    }
-
-    double q3Evaluate() {
-
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[2][i]);
-            checkBoxAnswers[i].setClickable(false);
-            if (checkBoxAnswers[i].isChecked()) {
-                if (correctAnswers[2][i]) {
-                    checkBoxAnswers[i].setBackgroundResource(R.drawable.correct_highlighted);
-                } else {
-                    checkBoxAnswers[i].setBackgroundResource(R.drawable.wrong_highlighted);
-                }
-            }
-        }
-
-        if ((checkBoxAnswers[1].isChecked() & checkBoxAnswers[3].isChecked()) & !(checkBoxAnswers[0].isChecked() & checkBoxAnswers[2].isChecked())) {
-            return 1;
-        }
-        // 0.5 point if at least one good is checked an no wrong
-        else if ((checkBoxAnswers[1].isChecked() || checkBoxAnswers[3].isChecked()) & !(checkBoxAnswers[0].isChecked() || checkBoxAnswers[2].isChecked())) {
-            return 0.5;
-        } else {
-            return 0;
-        }
-    }
-
-    void q3Reset() {
-//
-//        for (int i = 0; i < checkBoxAnswers.length; i++) {
-//            checkBoxAnswers[i] = findViewById(viewIDs[2][i]);
-//            checkBoxAnswers[i].setBackgroundColor(View.INVISIBLE);
-//            checkBoxAnswers[i].setClickable(true);
-//            checkBoxAnswers[i].setChecked(false);
-//        }
-        int i = 0;
-        for (CheckBox answer : checkBoxAnswers) {
-            answer = findViewById(viewIDs[2][i]);
-            answer.setBackgroundColor(View.INVISIBLE);
-            answer.setClickable(true);
-            answer.setChecked(false);
-            i++;
-        }
-    }
-//TODO: apply automation from q3Evaluate
-    boolean q4Evaluate() {
-        EditText editTextView = findViewById(R.id.q4_answer_edit_text);
-        editTextView.setEnabled(false);
-        String userAnswer = editTextView.getText().toString();
-        if (userAnswer.equals("123")) {
-            editTextView.setBackgroundColor(R.drawable.correct_highlighted);
-            return true;
-        }
-        editTextView.setBackgroundColor(R.drawable.wrong_highlighted);
-        return false;
-    }
-
-    void q4Reset() {
-        EditText editTextView = findViewById(R.id.q4_answer_edit_text);
-//        editTextView.setHint(getString(R.string.q4_hint));
-        editTextView.setText("");
-        editTextView.setEnabled(true);
-        editTextView.setBackgroundColor(View.INVISIBLE);
-    }
-
-    double q5Evaluate() {
-
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[4][i]);
-            checkBoxAnswers[i].setClickable(false);
-        }
-//        checkBoxAnswers[0] = findViewById(R.id.q5_answer1_check_box);
-//        checkBoxAnswers[1] = findViewById(R.id.q5_answer2_check_box);
-//        checkBoxAnswers[2] = findViewById(R.id.q5_answer3_check_box);
-//        checkBoxAnswers[3] = findViewById(R.id.q5_answer4_check_box);
-
-        if (checkBoxAnswers[0].isChecked()) {
-            checkBoxAnswers[0].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-        if (checkBoxAnswers[1].isChecked()) {
-            checkBoxAnswers[1].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-        if (checkBoxAnswers[2].isChecked()) {
-            checkBoxAnswers[2].setBackgroundResource(R.drawable.correct_highlighted);
-        }
-        if (checkBoxAnswers[3].isChecked()) {
-            checkBoxAnswers[3].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-
-
-        // 1 point when asswer 3 is checked
-        if (checkBoxAnswers[2].isChecked() & !(checkBoxAnswers[0].isChecked() || checkBoxAnswers[1].isChecked() || checkBoxAnswers[3].isChecked())) {
-            return 1;
-        }
-        return 0;
-    }
-
-
-    void q5Reset() {
-
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[4][i]);
-            checkBoxAnswers[i].setBackgroundColor(View.INVISIBLE);
-            checkBoxAnswers[i].setClickable(true);
-            checkBoxAnswers[i].setChecked(false);
-        }
-
-
-//        CheckBox answer1 = findViewById(R.id.q5_answer1_check_box);
-//        CheckBox answer2 = findViewById(R.id.q5_answer2_check_box);
-//        CheckBox answer3 = findViewById(R.id.q5_answer3_check_box);
-//        CheckBox answer4 = findViewById(R.id.q5_answer4_check_box);
-//        answer1.setBackgroundColor(View.INVISIBLE);
-//        answer2.setBackgroundColor(View.INVISIBLE);
-//        answer3.setBackgroundColor(View.INVISIBLE);
-//        answer4.setBackgroundColor(View.INVISIBLE);
-//        answer1.setClickable(true);
-//        answer2.setClickable(true);
-//        answer3.setClickable(true);
-//        answer4.setClickable(true);
-//        answer1.setChecked(false);
-//        answer2.setChecked(false);
-//        answer3.setChecked(false);
-//        answer4.setChecked(false);
-    }
-
-    double q6Evaluate() {
-
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[5][i]);
-            checkBoxAnswers[i].setClickable(false);
-        }
-//
-//        checkBoxAnswers[0] = findViewById(R.id.q6_answer1_check_box);
-//        checkBoxAnswers[1] = findViewById(R.id.q6_answer2_check_box);
-//        checkBoxAnswers[2] = findViewById(R.id.q6_answer3_check_box);
-//        checkBoxAnswers[3] = findViewById(R.id.q6_answer4_check_box);
-
-        if (checkBoxAnswers[0].isChecked()) {
-            checkBoxAnswers[0].setBackgroundResource(R.drawable.correct_highlighted);
-        }
-        if (checkBoxAnswers[1].isChecked()) {
-            checkBoxAnswers[1].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-        if (checkBoxAnswers[2].isChecked()) {
-            checkBoxAnswers[2].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-        if (checkBoxAnswers[3].isChecked()) {
-            checkBoxAnswers[3].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-
-        // 1 point when asswer 3 is checked
-        if (checkBoxAnswers[0].isChecked() & !(checkBoxAnswers[1].isChecked() || checkBoxAnswers[2].isChecked() || checkBoxAnswers[3].isChecked())) {
-            return 1;
-        }
-        return 0;
-    }
-
-    void q6Reset() {
-//        CheckBox answer1 = findViewById(R.id.q6_answer1_check_box);
-//        CheckBox answer2 = findViewById(R.id.q6_answer2_check_box);
-//        CheckBox answer3 = findViewById(R.id.q6_answer3_check_box);
-//        CheckBox answer4 = findViewById(R.id.q6_answer4_check_box);
-//        answer1.setBackgroundColor(View.INVISIBLE);
-//        answer2.setBackgroundColor(View.INVISIBLE);
-//        answer3.setBackgroundColor(View.INVISIBLE);
-//        answer4.setBackgroundColor(View.INVISIBLE);
-//        answer1.setClickable(true);
-//        answer2.setClickable(true);
-//        answer3.setClickable(true);
-//        answer4.setClickable(true);
-//        answer1.setChecked(false);
-//        answer2.setChecked(false);
-//        answer3.setChecked(false);
-//        answer4.setChecked(false);
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[5][i]);
-            checkBoxAnswers[i].setBackgroundColor(View.INVISIBLE);
-            checkBoxAnswers[i].setClickable(true);
-            checkBoxAnswers[i].setChecked(false);
-        }
-
-    }
-
-    double q7Evaluate() {
-
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[6][i]);
-            checkBoxAnswers[i].setClickable(true);
-        }
-//        checkBoxAnswers[0] = findViewById(R.id.q7_answer1_check_box);
-//        checkBoxAnswers[1] = findViewById(R.id.q7_answer2_check_box);
-//        checkBoxAnswers[2] = findViewById(R.id.q7_answer3_check_box);
-//        checkBoxAnswers[3] = findViewById(R.id.q7_answer4_check_box);
-
-        if (checkBoxAnswers[0].isChecked()) {
-            checkBoxAnswers[0].setBackgroundResource(R.drawable.correct_highlighted);
-        }
-        if (checkBoxAnswers[1].isChecked()) {
-            checkBoxAnswers[1].setBackgroundResource(R.drawable.correct_highlighted);
-        }
-        if (checkBoxAnswers[2].isChecked()) {
-            checkBoxAnswers[2].setBackgroundResource(R.drawable.wrong_highlighted);
-        }
-        if (checkBoxAnswers[3].isChecked()) {
-            checkBoxAnswers[3].setBackgroundResource(R.drawable.correct_highlighted);
-        }
-
-        // 1 point when all three answers are checked and wrong is unchecked
-        if ((checkBoxAnswers[0].isChecked() & checkBoxAnswers[1].isChecked() & checkBoxAnswers[3].isChecked()) & !checkBoxAnswers[2].isChecked()) {
-            return 1;
-        }
-        //when at least one correct is checked and wrong isn't
-        else if ((checkBoxAnswers[0].isChecked() || checkBoxAnswers[1].isChecked() || checkBoxAnswers[3].isChecked()) & !checkBoxAnswers[2].isChecked()) {
-            return 0.5;
-        }
-        return 0;
-    }
-
-    void q7Reset() {
-//        CheckBox answer1 = findViewById(R.id.q7_answer1_check_box);
-//        CheckBox answer2 = findViewById(R.id.q7_answer2_check_box);
-//        CheckBox answer3 = findViewById(R.id.q7_answer3_check_box);
-//        CheckBox answer4 = findViewById(R.id.q7_answer4_check_box);
-//        answer1.setBackgroundColor(View.INVISIBLE);
-//        answer2.setBackgroundColor(View.INVISIBLE);
-//        answer3.setBackgroundColor(View.INVISIBLE);
-//        answer4.setBackgroundColor(View.INVISIBLE);
-//        answer1.setClickable(true);
-//        answer2.setClickable(true);
-//        answer3.setClickable(true);
-//        answer4.setClickable(true);
-//        answer1.setChecked(false);
-//        answer2.setChecked(false);
-//        answer3.setChecked(false);
-//        answer4.setChecked(false);
-
-        for (int i = 0; i < checkBoxAnswers.length; i++) {
-            checkBoxAnswers[i] = findViewById(viewIDs[6][i]);
-            checkBoxAnswers[i].setBackgroundColor(View.INVISIBLE);
-            checkBoxAnswers[i].setClickable(true);
-            checkBoxAnswers[i].setChecked(false);
-        }
-    }
-
-    public void submitQuiz() {
-        submitButton.setText(getString(R.string.try_again_button));
-        double score = 0;
-        if (q1Evaluate()) {
-            score += 1;
-        }
-        if (q2Evaluate()) {
-            score += 1;
-        }
-        score += q3Evaluate();
-        if (q4Evaluate()) {
-            score += 1;
-        }
-        score += q5Evaluate();
-        score += q6Evaluate();
-        score += q7Evaluate();
-        Toast.makeText(this, getString(R.string.show_score, score), Toast.LENGTH_LONG).show();
-        submitButtonFlag = true;
-    }
-
-    void resetQuiz() {
-        ScrollView scrollView = findViewById(R.id.scroll_view);
-        ObjectAnimator.ofInt(scrollView, "scrollY", ScrollView.FOCUS_UP).setDuration(1000).start();
-        submitButton.setText(getString(R.string.submit_button));
-        q1Reset();
-        q2Reset();
-        q3Reset();
-        q4Reset();
-        q5Reset();
-        q6Reset();
-        q7Reset();
-        submitButtonFlag = false;
-    }
-
+    /*handle the submitButton
+    * */
     void submitButtonHandler(View view) {
         Button showAnswerButton = findViewById(R.id.show_answers_button);
         if (!submitButtonFlag) {
             submitQuiz();
-
             showAnswerButton.setVisibility(View.VISIBLE);
         } else {
             resetQuiz();
-            showAnswerButton.setVisibility(View.INVISIBLE);
+            showAnswerButton.setVisibility(View.GONE);
         }
     }
 
-    void showAnswers(View view) {
+    /*submit the quiz
+     * evaluates the quiz and gives a final score
+     * changes submitButtonFlag to true -> so the submitButton can invoke resetQuiz() method
+     * */
+    public void submitQuiz() {
+        scrollToTop();
+        submitButton.setText(getString(R.string.try_again_button));
+        Toast.makeText(this, getString(R.string.show_score, evaluateAllQuestions()), Toast.LENGTH_LONG).show();
+        submitButtonFlag = true;
+    }
+
+    /*reset the quiz to its original view
+    * set submitButtonFlag to false so the submitButton can invoke submitQuiz() method
+    * */
+    void resetQuiz() {
+        scrollToTop();
+        submitButton.setText(getString(R.string.submit_button));
+        resetAllAnswers();
+        submitButtonFlag = false;
+    }
+
+    /*show to the user correct answers*/
+    void showCorrectAnswers(View view) {
+        scrollToTop();
         Button showAnswersButton = findViewById(R.id.show_answers_button);
         showAnswersButton.setVisibility(View.INVISIBLE);
-        RadioButton q1answer = findViewById(R.id.q1_answer3_radio_button);
-        q1answer.setBackgroundResource(R.drawable.correct_highlighted);
-        RadioButton q2answer = findViewById(R.id.q2_answer2_radio_button);
-        q2answer.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q3answer2 = findViewById(R.id.q3_answer2_check_box);
-        q3answer2.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q3answer4 = findViewById(R.id.q3_answer4_check_box);
-        q3answer4.setBackgroundResource(R.drawable.correct_highlighted);
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < correctAnswersArray[i].length; j++) {
+                if (correctAnswersArray[i][j]) {
+                    View answer = findViewById(viewIDsArray[i][j]);
+                    answer.setBackgroundResource(R.drawable.correct_highlighted);
+                }
+            }
+        }
         EditText q4answer = findViewById(R.id.q4_answer_edit_text);
         q4answer.setText(getString(R.string.q4_answer));
         q4answer.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q5answer3 = findViewById(R.id.q5_answer3_check_box);
-        q5answer3.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q6answer1 = findViewById(R.id.q6_answer1_check_box);
-        q6answer1.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q7answer1 = findViewById(R.id.q7_answer1_check_box);
-        q7answer1.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q7answer2 = findViewById(R.id.q7_answer2_check_box);
-        q7answer2.setBackgroundResource(R.drawable.correct_highlighted);
-        CheckBox q7answer4 = findViewById(R.id.q7_answer4_check_box);
-        q7answer4.setBackgroundResource(R.drawable.correct_highlighted);
-
-
     }
+
+
+    /*evaluate total score of user's trial*/
+    double evaluateAllQuestions() {
+        double totalScore = 0;
+        for (int i = 1; i <= numberOfQuestions; i++) {
+            if (i != 4) {
+                totalScore += evaluateQuestion(i);
+            }
+        }
+        totalScore += q4Evaluate();
+        return totalScore;
+    }
+
+    /*evaluate question 4 - EditText question
+    * different evaluation needed
+    * @param return - 1 if good answer/ 0 if wrong
+    * */
+    int q4Evaluate() {
+        EditText editTextView = findViewById(R.id.q4_answer_edit_text);
+        Log.v("main", "class of editext:  " + editTextView.getClass());
+        editTextView.setEnabled(false);
+        String userAnswer = editTextView.getText().toString();
+        if (userAnswer.equals("123")) {
+            editTextView.setBackgroundColor(R.drawable.correct_highlighted);
+            return 1;
+        }
+        editTextView.setBackgroundColor(R.drawable.wrong_highlighted);
+        return 0;
+    }
+
+    /*evaluate score for a question
+   * @param questionNumber - number of a question
+   * @param return - score (0; 0.5; 1)
+   * 0 if wrong
+   * 1 if good
+   * */
+    double evaluateQuestion(int questionNumber) {
+        // question for is an EditText question - this evaluation doesn't apply here
+        if (questionNumber != 4) {
+
+            /* assign buttons to good and bad answers
+            * highlight good and wrong user's answers
+            * set all the buttons setClickable(false)
+            **/
+            CompoundButton[] goodAnswers = new CompoundButton[3];
+            CompoundButton[] wrongAnswers = new CompoundButton[3];
+            int i = 0;
+            int j = 0;
+            for (int k = 0; k < correctAnswersArray[questionNumber - 1].length; k++) {
+                if (correctAnswersArray[questionNumber - 1][k]) {
+                    goodAnswers[i] = findViewById(viewIDsArray[questionNumber - 1][k]);
+                    goodAnswers[i].setClickable(false);
+                    if (goodAnswers[i].isChecked()) {
+                        goodAnswers[i].setBackgroundResource(R.drawable.correct_highlighted);
+                    }
+                    i++;
+                } else {
+                    wrongAnswers[j] = findViewById(viewIDsArray[questionNumber - 1][k]);
+                    wrongAnswers[j].setClickable(false);
+                    if (wrongAnswers[j].isChecked()) {
+                        wrongAnswers[j].setBackgroundResource(R.drawable.wrong_highlighted);
+                    }
+                    j++;
+                }
+            }
+            /*If question factor is 1 :
+            * 1 point if good is checked and no wrong checked
+            * else 0 points
+            */
+            if (countQuestionFactor(questionNumber) == 1) {
+                if (goodAnswers[0].isChecked() & !(wrongAnswers[0].isChecked() || wrongAnswers[1].isChecked() || wrongAnswers[2].isChecked())) {
+                    return 1;
+                }
+                return 0;
+            }
+            /*If question factor is 2 :
+            * 1 point if all the good are checked and no wrong checked
+            * 0.5 point if at least one good checked and no wrong checked
+            * else 0 points
+            * */
+            else if (countQuestionFactor(questionNumber) == 2) {
+                if (goodAnswers[0].isChecked() & goodAnswers[1].isChecked() & !(wrongAnswers[0].isChecked() || wrongAnswers[1].isChecked())) {
+                    return 1;
+                } else if ((goodAnswers[0].isChecked() || goodAnswers[1].isChecked()) & !(wrongAnswers[0].isChecked() || wrongAnswers[1].isChecked())) {
+                    return 0.5;
+                } else return 0;
+            }
+            /*If question factor is 3 :
+            * 1 point if all the good answers are checked and no wrong checked
+            * 0.5 point if at least one good checked and no worng checked
+            * else 0 points
+            * */
+            else if (countQuestionFactor(questionNumber) == 3) {
+                if ((goodAnswers[0].isChecked() & goodAnswers[1].isChecked() & goodAnswers[2].isChecked()) & !wrongAnswers[0].isChecked()) {
+                    return 1;
+                } else if ((goodAnswers[0].isChecked() || goodAnswers[1].isChecked() || goodAnswers[2].isChecked()) & !wrongAnswers[0].isChecked()) {
+                    return 0.5;
+                } else return 0;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
+    /*count how many good solutions (how many true values) each question has
+    * @param questionNumber - number of a question
+    * @param return - questionFactor - number of good solutions
+    * */
+    int countQuestionFactor(int questionNumber) {
+        int questionFactor = 0;
+        for (boolean item : correctAnswersArray[questionNumber - 1]) {
+            if (item) {
+                questionFactor++;
+            }
+        }
+        return questionFactor;
+    }
+
+    /*restore activity_main.xml to its original view*/
+    void resetAllAnswers() {
+        for (int[] idArray : viewIDsArray) {
+            for (int id : idArray) {
+                if (idArray != viewIDsArray[3]) {
+                    CompoundButton answer = findViewById(id);
+                    answer.setBackgroundColor(View.INVISIBLE);
+                    answer.setClickable(true);
+                    answer.setChecked(false);
+                } else {
+                    EditText answer = findViewById(id);
+                    answer.setText("");
+                    answer.setBackgroundColor(View.INVISIBLE);
+                    answer.setEnabled(true);
+                }
+            }
+        }
+    }
+
+    /*scroll activity_main.xml to the top*/
+    public void scrollToTop() {
+        ScrollView scrollView = findViewById(R.id.scroll_view);
+        ObjectAnimator.ofInt(scrollView, "scrollY", ScrollView.FOCUS_UP).setDuration(1000).start();
+    }
+
+
 }

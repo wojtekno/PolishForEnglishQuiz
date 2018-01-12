@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#F4FF81</item>
     </style>
 
     <style name="AppHeader">
@@ -22,10 +22,14 @@
 
     <style name="container_white">
         <item name="android:background">@drawable/options_container_white</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
     <style name="container_red">
         <item name="android:background">@drawable/options_container_red</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
 
@@ -35,5 +39,9 @@
     <style name="check_box_style">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
+    </style>
+    <style name="radio_button_style">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 </resources>
