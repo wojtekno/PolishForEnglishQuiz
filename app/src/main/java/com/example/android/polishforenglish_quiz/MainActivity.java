@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isSubmitButtonClicked = false;
     Button showCorrectAnswersButton;
     boolean isShowCorrectAnswersButtonClicked = false;
-//    boolean isEditTextFocused = false;
+    //    boolean isEditTextFocused = false;
     int numberOfQuestions = 7;
     int[][] viewIDsArray = new int[numberOfQuestions][];
     boolean[][] correctAnswersArray = new boolean[numberOfQuestions][];
@@ -112,11 +112,13 @@ public class MainActivity extends AppCompatActivity {
         scrollToTop();
         submitButton.setText(getString(R.string.try_again_button));
         double score = evaluateAllQuestions();
-        if(!isSubmitButtonClicked) {
-            Toast.makeText(this, getString(R.string.show_score, score), Toast.LENGTH_LONG).show();
+        if (!isSubmitButtonClicked) {
+            showFinalScore(score);
         }
         isSubmitButtonClicked = true;
-        showCorrectAnswersButton.setVisibility(View.VISIBLE);
+        if (score != numberOfQuestions) {
+            showCorrectAnswersButton.setVisibility(View.VISIBLE);
+        }
         clearEditTextFocus();
     }
 
@@ -274,6 +276,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return questionFactor;
+    }
+
+    /*show a final message with the user's score
+    * */
+    void showFinalScore(double score) {
+        if (score != numberOfQuestions) {
+            Toast.makeText(this, getString(R.string.show_score_not_max, score), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, getString(R.string.show_score_max, score), Toast.LENGTH_LONG).show();
+        }
     }
 
     /*restore activity_main.xml to its original view*/

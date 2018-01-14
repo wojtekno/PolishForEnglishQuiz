@@ -5,7 +5,8 @@
     <string name="header_question">Let\'s see if it\'s that foreign!</string>
 
 
-    <string name="show_score">Your scored: <xliff:g name="score" example="3">%.1f</xliff:g> points out of 7\nYou can see the correct answers or TRY AGAIN</string>
+    <string name="show_score_not_max">Your scored: <xliff:g name="score" example="3">%.1f</xliff:g> points out of 7\nYou can see the correct answers or TRY AGAIN</string>
+   <string name="show_score_max">Your scored: <xliff:g name="score" example="3">%.1f</xliff:g> points out of 7\nREALLY GOOD JOB!!!</string>
     <string name="submit_button">Submit</string>
     <string name="reset_button">Reset Quiz</string>
     <string name="try_again_button">Try again</string>
