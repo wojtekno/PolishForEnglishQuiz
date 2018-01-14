@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.example.android.polishforenglish_quiz.MainActivity">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,11 +18,11 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
 
             <TextView
                 style="@style/AppHeader"
@@ -33,16 +34,16 @@
                 android:id="@+id/header_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:text="@string/header_intro"
-                android:textSize="24sp" />
+                android:textSize="22sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
+                android:gravity="center_horizontal"
                 android:text="@string/header_question"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="24sp" />
+                android:textSize="22sp" />
 
         </LinearLayout>
 
@@ -53,7 +54,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/QuestionHeader"
+                style="@style/QuestionHeader_red"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/q1" />
@@ -73,22 +74,26 @@
                     <RadioButton
                         android:id="@+id/q1_answer1_radio_button"
                         style="@style/radio_button_style"
-                        android:text="@string/q1_answer1" />
+                        android:text="@string/q1_answer1"
+                         />
 
                     <RadioButton
                         android:id="@+id/q1_answer2_radio_button"
                         style="@style/radio_button_style"
-                        android:text="@string/q1_answer2" />
+                        android:text="@string/q1_answer2"
+                        />
 
                     <RadioButton
                         android:id="@+id/q1_answer3_radio_button"
                         style="@style/radio_button_style"
-                        android:text="@string/q1_answer3" />
+                        android:text="@string/q1_answer3"
+                         />
 
                     <RadioButton
                         android:id="@+id/q1_answer4_radio_button"
                         style="@style/radio_button_style"
-                        android:text="@string/q1_answer4" />
+                        android:text="@string/q1_answer4"
+                         />
                 </RadioGroup>
 
                 <TextView
@@ -105,12 +110,10 @@
             android:orientation="vertical">
 
             <TextView
-
-                style="@style/QuestionHeader"
+                style="@style/QuestionHeader_white"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/q2"
-                android:textColor="@android:color/holo_red_dark" />
+                android:text="@string/q2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -158,7 +161,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/QuestionHeader"
+                style="@style/QuestionHeader_red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/q3" />
@@ -208,31 +211,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/q4"
-                style="@style/QuestionHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/q4" />
-
-            <EditText
-                android:id="@+id/q4_answer_edit_text"
-                android:background="@drawable/options_container_white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/q4_hint"
-                android:inputType="number" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/container_red"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/QuestionHeader"
+                style="@style/QuestionHeader_white"
                 android:text="@string/q5" />
 
             <LinearLayout
@@ -282,13 +261,13 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/container_white"
+            style="@style/container_red"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                style="@style/QuestionHeader"
+                style="@style/QuestionHeader_red"
                 android:text="@string/q6" />
 
             <LinearLayout
@@ -327,14 +306,15 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/container_red"
+            style="@style/container_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                style="@style/QuestionHeader"
-                android:text="@string/q7" />
+                style="@style/QuestionHeader_white"
+                android:text="@string/q7"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -371,6 +351,30 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            style="@style/container_red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/q4"
+                style="@style/QuestionHeader_red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/q4" />
+
+            <EditText
+                android:id="@+id/q4_answer_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/options_container_red"
+                android:hint="@string/q4_hint"
+                android:inputType="number"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/submit_button"

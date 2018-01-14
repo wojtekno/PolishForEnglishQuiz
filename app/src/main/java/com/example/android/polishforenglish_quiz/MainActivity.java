@@ -14,7 +14,10 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     Button submitButton;
-    boolean submitButtonFlag = false;
+    boolean isSubmitButtonClicked = false;
+    Button showCorrectAnswersButton;
+    boolean isShowCorrectAnswersButtonClicked = false;
+//    boolean isEditTextFocused = false;
     int numberOfQuestions = 7;
     int[][] viewIDsArray = new int[numberOfQuestions][];
     boolean[][] correctAnswersArray = new boolean[numberOfQuestions][];
@@ -24,15 +27,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.getCurrentFocus();
         submitButton = findViewById(R.id.submit_button);
+        showCorrectAnswersButton = findViewById(R.id.show_answers_button);
         assignViewIDs();
         assignCorrectAnswers();
     }
 
-    /*TODO: onSavedInstance and onRestoreInstance*/
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isSubmitButtonClicked", isSubmitButtonClicked);
+        outState.putBoolean("isCorrectAnswerButtonClicked", isShowCorrectAnswersButtonClicked);
+//        outState.putBoolean("isEditTextFocused", isEditTextFocused);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isSubmitButtonClicked = savedInstanceState.getBoolean("isSubmitButtonClicked");
+        isShowCorrectAnswersButtonClicked = savedInstanceState.getBoolean("isCorrectAnswerButtonClicked");
+//        isEditTextFocused = savedInstanceState.getBoolean("isEditTextFocused");
+        Log.v("MainActivity", "buttonflah: " + isSubmitButtonClicked);
+        Log.v(this.toString(), "showccbu:" + isShowCorrectAnswersButtonClicked);
+//        Log.v("main", "is it focused?: " + isEditTextFocused);
+
+        if (isSubmitButtonClicked) {
+            submitQuiz();
+//            submitButton.setText(getString(R.string.try_again_button));
+//            evaluateAllQuestions();
+////            Toast.makeText(this, getString(R.string.show_score, evaluateAllQuestions()), Toast.LENGTH_LONG).show();
+//            isSubmitButtonClicked = true;
+//            showCorrectAnswersButton.setVisibility(View.VISIBLE);
+        }
+        if (isShowCorrectAnswersButtonClicked) {
+            showCorrectAnswers(null);
+        }
+        clearEditTextFocus();
+
+
+    }
 
     /*assign needed Views from activity_main.xml to the viewIDsArray
-    * */
+            * */
     void assignViewIDs() {
         viewIDsArray[0] = new int[]{R.id.q1_answer1_radio_button, R.id.q1_answer2_radio_button, R.id.q1_answer3_radio_button, R.id.q1_answer4_radio_button};
         viewIDsArray[1] = new int[]{R.id.q2_answer1_radio_button, R.id.q2_answer2_radio_button, R.id.q2_answer3_radio_button, R.id.q2_answer4_radio_button};
@@ -60,43 +97,44 @@ public class MainActivity extends AppCompatActivity {
     /*handle the submitButton
     * */
     void submitButtonHandler(View view) {
-        Button showAnswerButton = findViewById(R.id.show_answers_button);
-        if (!submitButtonFlag) {
+        if (!isSubmitButtonClicked) {
             submitQuiz();
-            showAnswerButton.setVisibility(View.VISIBLE);
         } else {
             resetQuiz();
-            showAnswerButton.setVisibility(View.GONE);
         }
     }
 
     /*submit the quiz
      * evaluates the quiz and gives a final score
-     * changes submitButtonFlag to true -> so the submitButton can invoke resetQuiz() method
+     * changes isSubmitButtonClicked to true -> so the submitButton can invoke resetQuiz() method
      * */
     public void submitQuiz() {
         scrollToTop();
         submitButton.setText(getString(R.string.try_again_button));
-        Toast.makeText(this, getString(R.string.show_score, evaluateAllQuestions()), Toast.LENGTH_LONG).show();
-        submitButtonFlag = true;
+        double score = evaluateAllQuestions();
+        if(!isSubmitButtonClicked) {
+            Toast.makeText(this, getString(R.string.show_score, score), Toast.LENGTH_LONG).show();
+        }
+        isSubmitButtonClicked = true;
+        showCorrectAnswersButton.setVisibility(View.VISIBLE);
+        clearEditTextFocus();
     }
 
     /*reset the quiz to its original view
-    * set submitButtonFlag to false so the submitButton can invoke submitQuiz() method
+    * set isSubmitButtonClicked to false so the submitButton can invoke submitQuiz() method
     * */
     void resetQuiz() {
         scrollToTop();
         submitButton.setText(getString(R.string.submit_button));
         resetAllAnswers();
-        submitButtonFlag = false;
+        isSubmitButtonClicked = false;
+        isShowCorrectAnswersButtonClicked = false;
+        showCorrectAnswersButton.setVisibility(View.GONE);
     }
 
     /*show to the user correct answers*/
     void showCorrectAnswers(View view) {
         scrollToTop();
-        Button showAnswersButton = findViewById(R.id.show_answers_button);
-        showAnswersButton.setVisibility(View.INVISIBLE);
-
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < correctAnswersArray[i].length; j++) {
                 if (correctAnswersArray[i][j]) {
@@ -108,8 +146,10 @@ public class MainActivity extends AppCompatActivity {
         EditText q4answer = findViewById(R.id.q4_answer_edit_text);
         q4answer.setText(getString(R.string.q4_answer));
         q4answer.setBackgroundResource(R.drawable.correct_highlighted);
-    }
+        showCorrectAnswersButton.setVisibility(View.GONE);
+        isShowCorrectAnswersButtonClicked = true;
 
+    }
 
     /*evaluate total score of user's trial*/
     double evaluateAllQuestions() {
@@ -131,13 +171,21 @@ public class MainActivity extends AppCompatActivity {
         EditText editTextView = findViewById(R.id.q4_answer_edit_text);
         Log.v("main", "class of editext:  " + editTextView.getClass());
         editTextView.setEnabled(false);
+//        editTextView.clearFocus();
         String userAnswer = editTextView.getText().toString();
         if (userAnswer.equals("123")) {
-            editTextView.setBackgroundColor(R.drawable.correct_highlighted);
+            editTextView.setBackgroundResource(R.drawable.correct_highlighted);
             return 1;
         }
-        editTextView.setBackgroundColor(R.drawable.wrong_highlighted);
+        editTextView.setBackgroundResource(R.drawable.wrong_highlighted);
         return 0;
+    }
+
+    /*clear the EditTextView's focus
+    * */
+    void clearEditTextFocus() {
+        EditText editTextView = findViewById(R.id.q4_answer_edit_text);
+        editTextView.clearFocus();
     }
 
     /*evaluate score for a question
