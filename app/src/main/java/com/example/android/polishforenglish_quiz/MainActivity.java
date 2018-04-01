@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isSubmitButtonClicked", isSubmitButtonClicked);
         outState.putBoolean("isCorrectAnswerButtonClicked", isShowCorrectAnswersButtonClicked);
-//        outState.putBoolean("isEditTextFocused", isEditTextFocused);
     }
 
     @Override
