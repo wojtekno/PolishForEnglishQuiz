@@ -44,7 +44,6 @@
                 android:gravity="center_horizontal"
                 android:text="@string/header_question"
                 android:textSize="22sp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -197,7 +196,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/q3_answer4" />
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -301,10 +299,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
-
             </LinearLayout>
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -394,6 +389,4 @@
             android:text="@string/show_answers_button"
             android:visibility="gone" />
     </LinearLayout>
-
-
 </ScrollView>

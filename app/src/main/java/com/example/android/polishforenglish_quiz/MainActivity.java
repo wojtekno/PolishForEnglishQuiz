@@ -3,7 +3,6 @@ package com.example.android.polishforenglish_quiz;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -17,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     boolean isSubmitButtonClicked = false;
     Button showCorrectAnswersButton;
     boolean isShowCorrectAnswersButtonClicked = false;
-    //    boolean isEditTextFocused = false;
     private final int NUMBER_OF_QUESTIONS = 7;
     int[][] viewIDsArray = new int[NUMBER_OF_QUESTIONS][];
     boolean[][] correctAnswersArray = new boolean[NUMBER_OF_QUESTIONS][];
@@ -46,25 +44,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         isSubmitButtonClicked = savedInstanceState.getBoolean("isSubmitButtonClicked");
         isShowCorrectAnswersButtonClicked = savedInstanceState.getBoolean("isCorrectAnswerButtonClicked");
-//        isEditTextFocused = savedInstanceState.getBoolean("isEditTextFocused");
-        Log.v("MainActivity", "buttonflah: " + isSubmitButtonClicked);
-        Log.v(this.toString(), "showccbu:" + isShowCorrectAnswersButtonClicked);
-//        Log.v("main", "is it focused?: " + isEditTextFocused);
-
         if (isSubmitButtonClicked) {
             submitQuiz();
-//            submitButton.setText(getString(R.string.try_again_button));
-//            evaluateAllQuestions();
-////            Toast.makeText(this, getString(R.string.show_score, evaluateAllQuestions()), Toast.LENGTH_LONG).show();
-//            isSubmitButtonClicked = true;
-//            showCorrectAnswersButton.setVisibility(View.VISIBLE);
         }
         if (isShowCorrectAnswersButtonClicked) {
             showCorrectAnswers(null);
         }
         clearEditTextFocus();
-
-
     }
 
     /*assign needed Views from activity_main.xml to the viewIDsArray
@@ -170,9 +156,7 @@ public class MainActivity extends AppCompatActivity {
     * */
     int q4Evaluate() {
         EditText editTextView = findViewById(R.id.q4_answer_edit_text);
-        Log.v("main", "class of editext:  " + editTextView.getClass());
         editTextView.setEnabled(false);
-//        editTextView.clearFocus();
         String userAnswer = editTextView.getText().toString();
         if (userAnswer.equals("123")) {
             editTextView.setBackgroundResource(R.drawable.correct_highlighted);
