@@ -18,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
     Button showCorrectAnswersButton;
     boolean isShowCorrectAnswersButtonClicked = false;
     //    boolean isEditTextFocused = false;
-    int numberOfQuestions = 7;
-    int[][] viewIDsArray = new int[numberOfQuestions][];
-    boolean[][] correctAnswersArray = new boolean[numberOfQuestions][];
+    private final int NUMBER_OF_QUESTIONS = 7;
+    int[][] viewIDsArray = new int[NUMBER_OF_QUESTIONS][];
+    boolean[][] correctAnswersArray = new boolean[NUMBER_OF_QUESTIONS][];
 
 
     @Override
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         viewIDsArray[1] = new int[]{R.id.q2_answer1_radio_button, R.id.q2_answer2_radio_button, R.id.q2_answer3_radio_button, R.id.q2_answer4_radio_button};
         viewIDsArray[2] = new int[]{R.id.q3_answer1_check_box, R.id.q3_answer2_check_box, R.id.q3_answer3_check_box, R.id.q3_answer4_check_box};
         viewIDsArray[3] = new int[]{R.id.q4_answer_edit_text};
-        viewIDsArray[4] = new int[]{R.id.q5_answer1_check_box, R.id.q5_answer2_check_box, R.id.q5_answer3_check_box, R.id.q5_answer4_check_box};
-        viewIDsArray[5] = new int[]{R.id.q6_answer1_check_box, R.id.q6_answer2_check_box, R.id.q6_answer3_check_box, R.id.q6_answer4_check_box};
+        viewIDsArray[4] = new int[]{R.id.q5_answer1_radio_button, R.id.q5_answer2_radio_button, R.id.q5_answer3_radio_button, R.id.q5_answer4_radio_button};
+        viewIDsArray[5] = new int[]{R.id.q6_answer1_radio_button, R.id.q6_answer2_radio_button, R.id.q6_answer3_radio_button, R.id.q6_answer4_radio_button};
         viewIDsArray[6] = new int[]{R.id.q7_answer1_check_box, R.id.q7_answer2_check_box, R.id.q7_answer3_check_box, R.id.q7_answer4_check_box};
     }
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*handle the submitButton
     * */
-    void submitButtonHandler(View view) {
+    public void submitButtonHandler(View view) {
         if (!isSubmitButtonClicked) {
             submitQuiz();
         } else {
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
      * evaluates the quiz and gives a final score
      * changes isSubmitButtonClicked to true -> so the submitButton can invoke resetQuiz() method
      * */
-    public void submitQuiz() {
+    void submitQuiz() {
         scrollToTop();
         submitButton.setText(getString(R.string.try_again_button));
         double score = evaluateAllQuestions();
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             showFinalScore(score);
         }
         isSubmitButtonClicked = true;
-        if (score != numberOfQuestions) {
+        if (score != NUMBER_OF_QUESTIONS) {
             showCorrectAnswersButton.setVisibility(View.VISIBLE);
         }
         clearEditTextFocus();
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     /*evaluate total score of user's trial*/
     double evaluateAllQuestions() {
         double totalScore = 0;
-        for (int i = 1; i <= numberOfQuestions; i++) {
+        for (int i = 1; i <= NUMBER_OF_QUESTIONS; i++) {
             if (i != 4) {
                 totalScore += evaluateQuestion(i);
             }
@@ -178,9 +178,12 @@ public class MainActivity extends AppCompatActivity {
         if (userAnswer.equals("123")) {
             editTextView.setBackgroundResource(R.drawable.correct_highlighted);
             return 1;
+        } else if (userAnswer.equals("")) {
+            return 0;
+        } else {
+            editTextView.setBackgroundResource(R.drawable.wrong_highlighted);
+            return 0;
         }
-        editTextView.setBackgroundResource(R.drawable.wrong_highlighted);
-        return 0;
     }
 
     /*clear the EditTextView's focus
@@ -281,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
     /*show a final message with the user's score
     * */
     void showFinalScore(double score) {
-        if (score != numberOfQuestions) {
+        if (score != NUMBER_OF_QUESTIONS) {
             Toast.makeText(this, getString(R.string.show_score_not_max, score), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, getString(R.string.show_score_max, score), Toast.LENGTH_LONG).show();
@@ -308,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*scroll activity_main.xml to the top*/
-    public void scrollToTop() {
+    void scrollToTop() {
         ScrollView scrollView = findViewById(R.id.scroll_view);
         ObjectAnimator.ofInt(scrollView, "scrollY", ScrollView.FOCUS_UP).setDuration(1000).start();
     }
